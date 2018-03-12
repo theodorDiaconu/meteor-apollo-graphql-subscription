@@ -1,8 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { compose } from "recompose";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { compose } from 'recompose';
+import Subscription from './Subscription';
 
 export const App = () => (
   <div className="App">
@@ -10,6 +11,7 @@ export const App = () => (
     <ul>
       <UserListWithData />
       <UpdateButtonContainer name="John Smith" />
+      <Subscription />
     </ul>
   </div>
 );
@@ -18,7 +20,7 @@ const UpdateButton = ({ mutate }) => {
   return (
     <button
       onClick={() => {
-        mutate({ name: "John" }).then(result => {
+        mutate({ name: 'John' }).then(result => {
           console.log(result);
         });
       }}
@@ -33,8 +35,8 @@ const UserList = ({ data: { userList, loading, error } }) => {
     return null;
   }
 
-  return userList.map(user => (
-    <li>
+  return userList.map((user, idx) => (
+    <li key={idx}>
       {user.firstName} {user.lastName}
     </li>
   ));

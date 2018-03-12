@@ -1,18 +1,19 @@
-import db from "./db";
-import { GraphQLScalarType } from "graphql";
-import { Kind } from "graphql/language";
-import buildGraph from "./buildGraph";
-import { pubsub } from "./pubsub";
+import db from './db';
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
+// import buildGraph from "./buildGraph";
+import { pubsub } from './pubsub';
+import GraphQLJSON from 'graphql-type-json';
 
 export const resolvers = {
   Query: {
     say(root, args, context) {
-      return "hello world";
+      return 'hello world';
     },
     userList(root, args, context, ast) {
       const { name } = args;
 
-      console.log(buildGraph(ast));
+      // console.log(buildGraph(ast));
 
       if (!name) {
         return db.getUsers();
@@ -26,7 +27,7 @@ export const resolvers = {
     updateUserName(root, args) {
       console.log(args);
 
-      return "ok";
+      return 'ok';
     }
   },
 
@@ -36,13 +37,24 @@ export const resolvers = {
         return payload;
       },
       subscribe: (...args) => {
-        return pubsub.asyncIterator("somethingChanged");
+        console.log('subbing');
+        return pubsub.asyncIterator('somethingChanged');
+      },
+      unsubscribe: () => {
+        console.log('unsub');
+      }
+    },
+    userList: {
+      resolve: payload => payload,
+      subscribe: (...args) => {
+        console.log('subbing userList');
+        return pubsub.asyncIterator('userList');
       }
     }
   },
 
   User: {
-    todos(root, args, context) {
+    comments(root, args, context) {
       if (root.todos) {
         return todos;
       }
@@ -51,15 +63,17 @@ export const resolvers = {
     }
   },
 
-  Todo: {
+  Comment: {
     username() {
-      return "John Smith";
+      return 'John Smith';
     }
   },
 
+  JSON: GraphQLJSON,
+
   Date: new GraphQLScalarType({
-    name: "Date",
-    description: "Date custom scalar type",
+    name: 'Date',
+    description: 'Date custom scalar type',
     parseValue(value) {
       return new Date(value); // value from the client
     },

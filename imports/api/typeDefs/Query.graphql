@@ -1,0 +1,9 @@
+#import './models/User'
+type Query {
+  say: String
+  userList(name: String): [User]
+}
+
+scalar Date
+
+scalar JSON
