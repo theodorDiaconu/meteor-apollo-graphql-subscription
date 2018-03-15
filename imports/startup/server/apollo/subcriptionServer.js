@@ -1,4 +1,4 @@
-import schema from '/imports/api/graphql';
+import schema from './schema';
 import { WebApp } from 'meteor/webapp';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { execute, subscribe } from 'graphql';

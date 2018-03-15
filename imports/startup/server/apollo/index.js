@@ -1,3 +1,3 @@
-import '/imports/api/graphql';
+import './accounts';
 import './server';
 import './subcriptionServer';

@@ -8,10 +8,18 @@ export default function load(array) {
   array.forEach(module => {
     const { typeDefs, resolvers } = module;
     if (resolvers) {
-      resolversCollection.push(...resolvers);
+      if (_.isArray(resolvers)) {
+        resolversCollection.push(...resolvers);
+      } else {
+        resolversCollection.push(resolvers);
+      }
     }
     if (typeDefs) {
-      typeDefsCollection.push(...typeDefs);
+      if (_.isArray(typeDefs)) {
+        typeDefsCollection.push(...typeDefs);
+      } else {
+        typeDefsCollection.push(typeDefs);
+      }
     }
   });
 
