@@ -1,0 +1,7 @@
+type Query {
+  comments: [Comment]
+}
+
+type Mutation {
+  updateComment(id: ID!): String
+}

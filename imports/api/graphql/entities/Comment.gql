@@ -1,6 +1,6 @@
 type Comment {
-  title: String!
+  text: String!
   isDone: Boolean!
   createdAt: Date!
-  username: String
+  user: User
 }

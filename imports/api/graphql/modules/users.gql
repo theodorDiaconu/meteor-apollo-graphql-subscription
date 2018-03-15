@@ -1,0 +1,7 @@
+type Query {
+  users: [User]
+}
+
+type Mutation {
+  updateUser(id: ID!): String
+}

@@ -1,4 +1,0 @@
-type Subscription {
-  somethingChanged: String
-  userList: [User]
-}

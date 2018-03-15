@@ -4,6 +4,9 @@ import { Kind } from 'graphql/language';
 // import buildGraph from "./buildGraph";
 import { pubsub } from './pubsub';
 import GraphQLJSON from 'graphql-type-json';
+import { Items } from '/imports/db';
+
+console.log('here');
 
 export const resolvers = {
   Query: {
@@ -20,12 +23,15 @@ export const resolvers = {
       } else {
         return db.getUsers().filter(user => user.firstName === name);
       }
+    },
+    items() {
+      return Items.find().fetch();
     }
   },
 
   Mutation: {
-    updateUserName(root, args) {
-      console.log(args);
+    updateUserName(root, args, context) {
+      console.log(context);
 
       return 'ok';
     }
@@ -44,11 +50,13 @@ export const resolvers = {
         console.log('unsub');
       }
     },
-    userList: {
+    items: {
       resolve: payload => payload,
-      subscribe: (...args) => {
-        console.log('subbing userList');
-        return pubsub.asyncIterator('userList');
+      subscribe: (root, args, context) => {
+        console.log('[inside subscription]', { root, args, context });
+        return pubsub.cursorAsyncIterator(function() {
+          return Items.find();
+        });
       }
     }
   },
